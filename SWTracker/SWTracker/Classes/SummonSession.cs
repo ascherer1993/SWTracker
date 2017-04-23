@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SWTracker.Classes
 {
-    class SummonSession
+    public class SummonSession
     {
         [PrimaryKey, AutoIncrement, Column("_id")]
         public int ID { get; set; }

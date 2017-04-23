@@ -16,7 +16,7 @@ namespace DataAccess
             this.context = context;
             this.stocks = stocks;
         }
-
+        
         public override Stock this[int position]
         {
             get { return stocks[position]; }

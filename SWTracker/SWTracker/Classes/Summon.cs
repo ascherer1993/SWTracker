@@ -1,13 +1,17 @@
 ﻿using SQLite;
 using SQLiteNetExtensions.Attributes;
+using SWTracker.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SWTracker.Classes
 {
-    class Summon
+    public class Summon
     {
+        DBConnection db = new DBConnection();
+
+
         [PrimaryKey, AutoIncrement, Column("_id")]
         public int SummonID { get; set; }
 
@@ -18,5 +22,12 @@ namespace SWTracker.Classes
         public int Stars { get; set; }
 
         public DateTime Date { get; set; }
+
+        //public SummonSession SummonSession {
+        //    get {
+        //        return db.getSummonSession("", SummonSessionID).Result;
+        //    }
+        //    set { }
+        //}
     }
 }

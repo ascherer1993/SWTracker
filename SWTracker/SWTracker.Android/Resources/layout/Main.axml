@@ -28,6 +28,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/displayMyClass" />
+    <Button
+        android:text="New Summon Session"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/SummonSessionButton" />
     <TextView
         android:text="ID Goes Here"
         android:textAppearance="?android:attr/textAppearanceMedium"
