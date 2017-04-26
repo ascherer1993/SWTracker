@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using SWTracker.Classes;
 using SWTracker.Utilities;
+using Android.Views.InputMethods;
 
 namespace SWTracker.Droid.Activities
 {
@@ -23,8 +24,15 @@ namespace SWTracker.Droid.Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            SetContentView(Resource.Layout.SummonSession);
             // Create your application here
+            //View view = this.CurrentFocus;
+            //if (view != null)
+            //{
+            //    InputMethodManager imm = (InputMethodManager)GetSystemService(Context.InputMethodService);
+            //    imm.HideSoftInputFromWindow(view.WindowToken, 0);
+            //}
+            
         }
 
         public async void AddSummonToSummonSession()

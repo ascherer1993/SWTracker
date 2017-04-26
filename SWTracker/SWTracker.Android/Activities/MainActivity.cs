@@ -84,16 +84,16 @@ namespace SWTracker.Droid
 
         public async void startNewSummonSession()
         {
-            SummonSession summonSession = new SummonSession();
-            await dbConnection.insertUpdateData<SummonSession>(summonSession, getFileDir());
+            //SummonSession summonSession = new SummonSession();
+            //await dbConnection.insertUpdateData<SummonSession>(summonSession, getFileDir());
 
             //NOT NEEDED, GETS DATA FROM INSERT, WHOA
             //List<SummonSession> summonsessionList = await dbConnection.getSummonSessionList(getFileDir());
             //summonSession = summonsessionList.First(f => f.Date == summonsessionList.Max(g => g.Date)) ;
-            Summon test = new Summon();
-            test.SummonSessionID = summonSession.ID;
-            test.Name = "Hello";
-            //StartActivity(typeof(SummonSessionActivity));
+            //Summon test = new Summon();
+            //test.SummonSessionID = summonSession.ID;
+            //test.Name = "Hello";
+            StartActivity(typeof(SummonSessionActivity));
         }
 
         //public async void addMyClass()

@@ -90,6 +90,7 @@
   <ItemGroup>
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\SummonSessionActivity.cs" />
+    <Compile Include="Activities\SummonSessionListActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Temp\Adapters\StockListAdapter.cs" />
@@ -103,6 +104,9 @@
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\SummonSession.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SummonSessionList.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
