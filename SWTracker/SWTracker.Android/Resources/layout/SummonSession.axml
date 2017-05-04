@@ -14,7 +14,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText1" />
+        android:id="@+id/monsterNameET" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/radioGroup1">
+                android:id="@+id/scrollTypeRG">
                 <TextView
                     android:text="Scroll Type"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -42,27 +42,27 @@
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:text="Mystic Scroll"
-                    android:id="@+id/radioButton1" />
+                    android:id="@+id/mysticScrollRB" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Summoning Stones"
-                    android:id="@+id/radioButton2" />
+                    android:id="@+id/summoningStonesRB" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="LD Scroll"
-                    android:id="@+id/radioButton3" />
+                    android:id="@+id/LightDarkScrollRB" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Legendary Scroll"
-                    android:id="@+id/radioButton7" />
+                    android:id="@+id/legendaryScrollRB" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Other"
-                    android:id="@+id/radioButton8" />
+                    android:id="@+id/otherRB" />
             </RadioGroup>
         </LinearLayout>
         <LinearLayout
@@ -77,7 +77,7 @@
             <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/radioGroup2">
+                android:id="@+id/starNumberRG">
                 <TextView
                     android:text="Stars"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -88,28 +88,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1 Star"
-                    android:id="@+id/radioButton5" />
+                    android:id="@+id/oneStarRB" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2 Star"
-                    android:id="@+id/radioButton6" />
+                    android:id="@+id/twoStarRB" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:text="3 Star"
-                    android:id="@+id/radioButton4" />
+                    android:id="@+id/threeStarRB" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4 Star"
-                    android:id="@+id/radioButton9" />
+                    android:id="@+id/fourStarRB" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5 Star"
-                    android:id="@+id/radioButton10" />
+                    android:id="@+id/fiveStarRB" />
             </RadioGroup>
         </LinearLayout>
     </LinearLayout>
@@ -122,7 +122,7 @@
             android:text="Save Summon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button1"
+            android:id="@+id/saveSummonB"
             android:layout_marginTop="10dp" />
     </LinearLayout>
     <LinearLayout
@@ -141,7 +141,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/textView5"
+            android:id="@+id/totalSummonsTV"
             android:layout_marginLeft="5dp" />
     </LinearLayout>
     <LinearLayout
@@ -160,7 +160,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/textView7"
+            android:id="@+id/threeStarSummonRateTV"
             android:layout_marginLeft="5dp" />
     </LinearLayout>
     <LinearLayout
@@ -179,7 +179,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/textView9"
+            android:id="@+id/fourStarSummonRateTV"
             android:layout_marginLeft="5dp" />
     </LinearLayout>
     <LinearLayout
@@ -198,7 +198,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/textView11"
+            android:id="@+id/fiveStarSummonRateTV"
             android:layout_marginLeft="5dp" />
     </LinearLayout>
 </LinearLayout>

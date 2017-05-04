@@ -18,6 +18,9 @@ namespace SWTracker.Classes
         [ForeignKey(typeof(SummonSession))]
         public int SummonSessionID { get; set; }
 
+        [ForeignKey(typeof(SummonType))]
+        public int SummonTypeID { get; set; }
+
         public string Name { get; set; }
         public int Stars { get; set; }
 
