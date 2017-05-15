@@ -28,6 +28,11 @@ namespace SWTracker.Droid.Activities
             // Create your application here
         }
 
+        protected override void OnRestart()
+        {
+            base.OnRestart();
+            fetchSummonSessions();
+        }
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.AddMenu, menu);
@@ -46,7 +51,7 @@ namespace SWTracker.Droid.Activities
             base.OnListItemClick(l, v, position, id);
 
             Intent summonSessionIntent = new Intent(this, typeof(SummonSessionActivity));
-            summonSessionIntent.PutExtra("ID", summonSessions[position].ID);
+            summonSessionIntent.PutExtra("summonSessionID", summonSessions[position].ID.ToString());
             StartActivity(summonSessionIntent);
         }
 

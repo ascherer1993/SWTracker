@@ -27,14 +27,6 @@ namespace SWTracker.Utilities
             {
                 return ex.Message;
             }
-            //try
-            //{
-            //    var connection = new SQLiteAsyncConnection(path);
-            //    {
-            //        connection.CreateTableAsync<MyClass>();
-            //        return "Database created";
-            //    }
-            //}
         }
         public async Task<string> deleteDatabase(string path)
         {
@@ -118,9 +110,14 @@ namespace SWTracker.Utilities
         public async Task<int> getNumOfSummons(string path, int SummonSessionID, int? starNumber)
         {
             var db = new SQLiteAsyncConnection(path);
-            await db.Table<SummonSession>().Where(f => f.ID == SummonSessionID).FirstOrDefaultAsync();
-            await db.Table<Summon>().Where(f => f.SummonSessionID == SummonSessionID).CountAsync();
-            return 1;
+            if (starNumber == null)
+            {
+                return await db.Table<Summon>().Where(f => f.SummonSessionID == SummonSessionID).CountAsync();
+            }
+            else
+            {
+                return await db.Table<Summon>().Where(f => f.SummonSessionID == SummonSessionID && f.Stars == starNumber).CountAsync();
+            }
         }
 
 

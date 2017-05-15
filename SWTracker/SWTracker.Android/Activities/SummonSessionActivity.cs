@@ -52,6 +52,7 @@ namespace SWTracker.Droid.Activities
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.SummonSession);
 
+            #region UIElements
             monsterNameEditText = FindViewById<EditText>(Resource.Id.monsterNameET);
             saveSummonButton = FindViewById<Button>(Resource.Id.saveSummonB);
 
@@ -74,9 +75,12 @@ namespace SWTracker.Droid.Activities
             threeStarRadioButton = FindViewById<RadioButton>(Resource.Id.threeStarRB);
             fourStarRadioButton = FindViewById<RadioButton>(Resource.Id.fourStarRB);
             fiveStarRadioButton = FindViewById<RadioButton>(Resource.Id.fiveStarRB);
-
-            summonSessionID = Intent.GetStringExtra("ID");
-
+            #endregion
+            summonSessionID = Intent.GetStringExtra("summonSessionID");
+            if (summonSessionID != null)
+            {
+                getSummonSessionFromDB();
+            }
 
             saveSummonButton.Click += delegate
             {
@@ -110,19 +114,19 @@ namespace SWTracker.Droid.Activities
                 //wouldn't work.
                 int scrollRadioButtonID = scrollTypeRadioGroup.CheckedRadioButtonId;
 
-                if (scrollRadioButtonID == mysticScrollRadioButton.Id)
+                if (mysticScrollRadioButton.Checked)
                 {
                     summon.SummonTypeID = 1;
                 }
-                else if (scrollRadioButtonID == summoningStonesRadioButton.Id)
+                else if (summoningStonesRadioButton.Checked)
                 {
                     summon.SummonTypeID = 2;
                 }
-                else if (scrollRadioButtonID == lightDarkScrollRadioButton.Id)
+                else if (lightDarkScrollRadioButton.Checked)
                 {
                     summon.SummonTypeID = 3;
                 }
-                else if (scrollRadioButtonID == lengendaryScrollRadioButton.Id)
+                else if (lengendaryScrollRadioButton.Checked)
                 {
                     summon.SummonTypeID = 4;
                 }
@@ -136,15 +140,20 @@ namespace SWTracker.Droid.Activities
                 #region starNumber
                 //Unlike above, this is immutable, so I thought an index approach
                 //was acceptable
-                int starRadioButtonID = scrollTypeRadioGroup.CheckedRadioButtonId;
+                int starRadioButtonID = starNumberRadioGroup.CheckedRadioButtonId;
                 View selectedStarRadioButton = starNumberRadioGroup.FindViewById(starRadioButtonID);
-                summon.Stars = starNumberRadioGroup.IndexOfChild(selectedStarRadioButton) + 1;
+
+                summon.Stars = starNumberRadioGroup.IndexOfChild(selectedStarRadioButton);
                 #endregion
 
                 //Name
                 if (!String.IsNullOrEmpty(monsterNameEditText.Text))
                 {
                     summon.Name = monsterNameEditText.Text;
+                }
+                else
+                {
+                    summon.Name = "";
                 }
 
                 //Insert
@@ -155,24 +164,15 @@ namespace SWTracker.Droid.Activities
             }
             else
             {
-                bool success;
-                int id;
                 if (summonSessionID != null)
                 {
-                    success = Int32.TryParse(summonSessionID, out id);
-                    if (success)
-                    {
-                        summonSession = await db.getSummonSession(this.GetDatabasePath("Summons.db").AbsolutePath, id);
-                        AddSummonToSummonSession();
-                    }
-                    else
-                    {
-                        Toast.MakeText(this, "Invalid ID", ToastLength.Long);
-                    }
+                    getSummonSessionFromDB();
+                    AddSummonToSummonSession();
                 }
                 else
                 {
                     SummonSession newSummonSession = new SummonSession();
+                    newSummonSession.Date = DateTime.Now;
                     await db.insertUpdateData(newSummonSession, this.GetDatabasePath("Summons.db").AbsolutePath);
                     summonSession = newSummonSession;
                     AddSummonToSummonSession();
@@ -180,9 +180,47 @@ namespace SWTracker.Droid.Activities
                 
             }
         }
-        public void calculateRates()
+        public async void getSummonSessionFromDB()
         {
-            fourStarSummonRateTextView.Text = "changed";
+            int id;
+            bool success = Int32.TryParse(summonSessionID, out id);
+            if (success)
+            {
+                summonSession = await db.getSummonSession(this.GetDatabasePath("Summons.db").AbsolutePath, id);
+                calculateRates();
+            }
+            else
+            {
+                Toast.MakeText(this, "Invalid ID", ToastLength.Long);
+            }
+        }
+        public async void calculateRates()
+        {
+            int id;
+            int totalNumberOfSummons;
+            int totalThreeStars;
+            int totalFourStars;
+            int totalFiveStars;
+            double threeStarRate;
+            double fourStarRate;
+            double fiveStarRate;
+
+
+            id = summonSession.ID;
+            
+            totalNumberOfSummons = await db.getNumOfSummons(this.GetDatabasePath("Summons.db").AbsolutePath, id, null);
+            totalThreeStars = await db.getNumOfSummons(this.GetDatabasePath("Summons.db").AbsolutePath, id, 3);
+            totalFourStars = await db.getNumOfSummons(this.GetDatabasePath("Summons.db").AbsolutePath, id, 4);
+            totalFiveStars = await db.getNumOfSummons(this.GetDatabasePath("Summons.db").AbsolutePath, id, 5);
+
+            threeStarRate = Math.Round((double)(totalThreeStars * 100) / totalNumberOfSummons, 2);
+            fourStarRate = Math.Round((double)(totalFourStars * 100) / totalNumberOfSummons, 2);
+            fiveStarRate = Math.Round((double)(totalFiveStars * 100) / totalNumberOfSummons, 2);
+
+            totalSummonsTextView.Text = totalNumberOfSummons.ToString();
+            threeStarSummonRateTextView.Text = threeStarRate + "%";
+            fourStarSummonRateTextView.Text = fourStarRate + "%";
+            fiveStarSummonRateTextView.Text = fiveStarRate + "%";
         }
     }
 }
