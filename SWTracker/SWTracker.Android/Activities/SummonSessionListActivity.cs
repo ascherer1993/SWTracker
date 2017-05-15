@@ -10,52 +10,44 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Threading.Tasks;
+using SWTracker.Classes;
+using SWTracker.Utilities;
 
 namespace SWTracker.Droid.Activities
 {
     [Activity(Label = "SummonSessionListActivity")]
     public class SummonSessionListActivity : ListActivity
     {
+        DBConnection db = new DBConnection();
+        List<SummonSession> summonSessions;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            fetchSummonSessions();
             // Create your application here
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            //MenuInflater.Inflate(Resource.Menu.AddMenu, menu);
+            MenuInflater.Inflate(Resource.Menu.AddMenu, menu);
             return base.OnCreateOptionsMenu(menu);
         }
 
-        public async Task fetchContacts()
+        public async Task fetchSummonSessions()
         {
-            //contacts = await service.fetchContacts();
+            summonSessions = await db.getSummonSessionList(this.GetDatabasePath("Summons.db").AbsolutePath);
 
-            //ListAdapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, contacts.Select(x => x.FirstName + " " + x.LastName).ToList());
+            ListAdapter = new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItem1, summonSessions.Select(x => x.ID + ": " + x.Date.ToString()).ToList());
         }
 
         protected override void OnListItemClick(ListView l, View v, int position, long id)
         {
             base.OnListItemClick(l, v, position, id);
 
-            //Intent modify = new Intent(this, typeof(ModifyContactActivity));
-            //modify.PutExtra("firstName", contacts[position].FirstName);
-            //modify.PutExtra("lastName", contacts[position].LastName);
-            //if (contacts[position].Email != null)
-            //{
-            //    modify.PutExtra("email", contacts[position].Email);
-            //}
-            //if (contacts[position].PhoneNumber != null)
-            //{
-            //    modify.PutExtra("phoneNumber", contacts[position].PhoneNumber);
-            //}
-            //if (contacts[position].ContactID != null)
-            //{
-            //    modify.PutExtra("contactId", contacts[position].ContactID ?? -1);
-            //}
-            //StartActivity(modify);
+            Intent summonSessionIntent = new Intent(this, typeof(SummonSessionActivity));
+            summonSessionIntent.PutExtra("ID", summonSessions[position].ID);
+            StartActivity(summonSessionIntent);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -63,10 +55,10 @@ namespace SWTracker.Droid.Activities
             //Open new contact activity
             switch (item.ItemId)
             {
-                //case Resource.Id.menu_add:
-                //    //Open Session
-                //    //StartActivity(typeof(ModifyContactActivity));
-                //    break;
+                case Resource.Id.menu_add:
+                    //Open Session
+                    StartActivity(typeof(SummonSessionActivity));
+                    break;
             }
             return base.OnOptionsItemSelected(item);
         }

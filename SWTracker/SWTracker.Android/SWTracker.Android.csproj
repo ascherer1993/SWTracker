@@ -122,6 +122,9 @@
   <ItemGroup>
     <Folder Include="ORM\" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\menu\AddMenu.xml" />
+  </ItemGroup>
   <Import Project="..\SWTracker\SWTracker.projitems" Label="Shared" Condition="Exists('..\SWTracker\SWTracker.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
 </Project>

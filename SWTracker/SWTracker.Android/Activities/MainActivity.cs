@@ -34,10 +34,9 @@ namespace SWTracker.Droid
             // Get our button from the layout resource,
             // and attach an event to it
             Button button = FindViewById<Button>(Resource.Id.myButton);
-            Button generateMyClass = FindViewById<Button>(Resource.Id.generateMyClass);
+            Button deleteDB = FindViewById<Button>(Resource.Id.deleteDB);
             Button makeDB = FindViewById<Button>(Resource.Id.makeDB);
-            Button displayMyClass = FindViewById<Button>(Resource.Id.displayMyClass);
-            Button deleteMyClass = FindViewById<Button>(Resource.Id.deleteMyClass);
+            Button showSummonSessions = FindViewById<Button>(Resource.Id.showSummonSessions);
             Button summonSessionButton = FindViewById<Button>(Resource.Id.SummonSessionButton);
 
 
@@ -52,8 +51,17 @@ namespace SWTracker.Droid
                 dbConnection.createDatabase(getFileDir());
             };
 
+            deleteDB.Click += delegate {
+                dbConnection.deleteDatabase(getFileDir());
+            };
+
             summonSessionButton.Click += delegate {
                 startNewSummonSession();
+            };
+
+            showSummonSessions.Click += delegate {
+                var summonSessionListIntent = new Intent(this, typeof(SummonSessionListActivity));
+                StartActivity(summonSessionListIntent);
             };
 
             //generateMyClass.Click += delegate {
@@ -71,10 +79,6 @@ namespace SWTracker.Droid
             //    getClassNumber();
             //};
 
-            deleteMyClass.Click += delegate
-            {
-                deleteClass();
-            };
 
         }
         public string getFileDir()
@@ -107,16 +111,13 @@ namespace SWTracker.Droid
         //    int number = await db.getNumberFromMyClass(getFileDir());
         //    numberText.Text = string.Format("The number is {0}!", number); ;
         //}
-        //public async void removeMyClass()
-        //{
-        //    MyClass myClass = new MyClass();
-        //    myClass.Id = 1;
-        //    int number = await db.removeMyClass(myClass, getFileDir());
-        //    numberText.Text = string.Format("Deleted!"); ;
-        //}
+        public async void removeMyClass()
+        {
+           
+        }
         public async void deleteClass()
         {
-            await dbConnection.myClassDeleteTable(getFileDir());
+            await dbConnection.deleteDatabase(getFileDir());
         }
     }
 }

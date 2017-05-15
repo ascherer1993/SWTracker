@@ -36,6 +36,23 @@ namespace SWTracker.Utilities
             //    }
             //}
         }
+        public async Task<string> deleteDatabase(string path)
+        {
+            try
+            {
+                var db = new SQLiteAsyncConnection(path);
+                await db.DropTableAsync<MyClass>();
+                await db.DropTableAsync<Summon>();
+                await db.DropTableAsync<SummonType>();
+                await db.DropTableAsync<SummonSession>();
+                return "Deleted database";
+            }
+            catch (SQLiteException ex)
+            {
+                return ex.Message;
+            }
+        }
+
 
         //public string createTable(string path, Type x)
         //{
@@ -98,9 +115,17 @@ namespace SWTracker.Utilities
             return await db.Table<SummonSession>().Where(f => f.ID == ID).FirstOrDefaultAsync();
         }
 
+        public async Task<int> getNumOfSummons(string path, int SummonSessionID, int? starNumber)
+        {
+            var db = new SQLiteAsyncConnection(path);
+            await db.Table<SummonSession>().Where(f => f.ID == SummonSessionID).FirstOrDefaultAsync();
+            await db.Table<Summon>().Where(f => f.SummonSessionID == SummonSessionID).CountAsync();
+            return 1;
+        }
+
 
         //************************************************************************
-        //SUMMONS
+        //SUMMONSESSIONS
         //************************************************************************
         public async Task<List<SummonSession>> getSummonSessionList(string path)
         {
@@ -185,21 +210,6 @@ namespace SWTracker.Utilities
                 return ex.Message;
             }
         }
-        public async Task<string> myClassDeleteTable(string path)
-        {
-            try
-            {
-                var db = new SQLiteAsyncConnection(path);
-                await db.DropTableAsync<MyClass>();
-                await db.DropTableAsync<Summon>();
-                await db.DropTableAsync<SummonType>();
-                await db.DropTableAsync<SummonSession>();
-                return "Single data file inserted or updated";
-            }
-            catch (SQLiteException ex)
-            {
-                return ex.Message;
-            }
-        }
+        
     }
 }

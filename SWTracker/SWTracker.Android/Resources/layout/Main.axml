@@ -9,25 +9,20 @@
         android:layout_height="wrap_content"
         android:text="@string/hello" />
     <Button
+        android:text="Delete DataBase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/deleteDB" />
+    <Button
         android:text="Make Database"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/makeDB" />
     <Button
-        android:text="Generate MyClass"
+        android:text="SummonSessions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/generateMyClass" />
-    <Button
-        android:text="Delete MyClass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/deleteMyClass" />
-    <Button
-        android:text="Display MyClass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/displayMyClass" />
+        android:id="@+id/showSummonSessions" />
     <Button
         android:text="New Summon Session"
         android:layout_width="match_parent"

@@ -21,6 +21,10 @@ namespace SWTracker.Droid.Activities
         public SummonSession summonSession;
         DBConnection db = new DBConnection();
 
+        string summonSessionID;
+
+
+        #region UIElements
         EditText monsterNameEditText;
         Button saveSummonButton;
         RadioGroup scrollTypeRadioGroup;
@@ -41,7 +45,7 @@ namespace SWTracker.Droid.Activities
         RadioButton threeStarRadioButton;
         RadioButton fourStarRadioButton;
         RadioButton fiveStarRadioButton;
-
+        #endregion
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -71,6 +75,8 @@ namespace SWTracker.Droid.Activities
             fourStarRadioButton = FindViewById<RadioButton>(Resource.Id.fourStarRB);
             fiveStarRadioButton = FindViewById<RadioButton>(Resource.Id.fiveStarRB);
 
+            summonSessionID = Intent.GetStringExtra("ID");
+
 
             saveSummonButton.Click += delegate
             {
@@ -89,65 +95,94 @@ namespace SWTracker.Droid.Activities
 
         public async void AddSummonToSummonSession()
         {
-            Summon summon = new Summon();
+            if (summonSession != null)
+            {
+                Summon summon = new Summon();
 
-            //SessionID
-            summon.SummonSessionID = summonSession.ID;
+                //SessionID
+                summon.SummonSessionID = summonSession.ID;
 
-            //Scroll Type
-            #region scrollType
-            //I used this method instead of just getting the index and assigning
-            //that because I thought this was a lot more clear. But it is a lot more
-            //effort. Also, if I ever added another option above other, that
-            //wouldn't work.
-            int scrollRadioButtonID = scrollTypeRadioGroup.CheckedRadioButtonId;
+                //Scroll Type
+                #region scrollType
+                //I used this method instead of just getting the index and assigning
+                //that because I thought this was a lot more clear. But it is a lot more
+                //effort. Also, if I ever added another option above other, that
+                //wouldn't work.
+                int scrollRadioButtonID = scrollTypeRadioGroup.CheckedRadioButtonId;
 
-            if (scrollRadioButtonID == mysticScrollRadioButton.Id)
-            {
-                summon.SummonTypeID = 1;
+                if (scrollRadioButtonID == mysticScrollRadioButton.Id)
+                {
+                    summon.SummonTypeID = 1;
+                }
+                else if (scrollRadioButtonID == summoningStonesRadioButton.Id)
+                {
+                    summon.SummonTypeID = 2;
+                }
+                else if (scrollRadioButtonID == lightDarkScrollRadioButton.Id)
+                {
+                    summon.SummonTypeID = 3;
+                }
+                else if (scrollRadioButtonID == lengendaryScrollRadioButton.Id)
+                {
+                    summon.SummonTypeID = 4;
+                }
+                //Other
+                else
+                {
+                    summon.SummonTypeID = 5;
+                }
+                #endregion
+                //Star Number
+                #region starNumber
+                //Unlike above, this is immutable, so I thought an index approach
+                //was acceptable
+                int starRadioButtonID = scrollTypeRadioGroup.CheckedRadioButtonId;
+                View selectedStarRadioButton = starNumberRadioGroup.FindViewById(starRadioButtonID);
+                summon.Stars = starNumberRadioGroup.IndexOfChild(selectedStarRadioButton) + 1;
+                #endregion
+
+                //Name
+                if (!String.IsNullOrEmpty(monsterNameEditText.Text))
+                {
+                    summon.Name = monsterNameEditText.Text;
+                }
+
+                //Insert
+                await db.insertUpdateData<Summon>(summon, this.GetDatabasePath("Summons.db").AbsolutePath);
+
+                //Calculate Summon Rates
+                calculateRates();
             }
-            else if (scrollRadioButtonID == summoningStonesRadioButton.Id)
-            {
-                summon.SummonTypeID = 2;
-            }
-            else if (scrollRadioButtonID == lightDarkScrollRadioButton.Id)
-            {
-                summon.SummonTypeID = 3;
-            }
-            else if (scrollRadioButtonID == lengendaryScrollRadioButton.Id)
-            {
-                summon.SummonTypeID = 4;
-            }
-            //Other
             else
             {
-                summon.SummonTypeID = 5;
+                bool success;
+                int id;
+                if (summonSessionID != null)
+                {
+                    success = Int32.TryParse(summonSessionID, out id);
+                    if (success)
+                    {
+                        summonSession = await db.getSummonSession(this.GetDatabasePath("Summons.db").AbsolutePath, id);
+                        AddSummonToSummonSession();
+                    }
+                    else
+                    {
+                        Toast.MakeText(this, "Invalid ID", ToastLength.Long);
+                    }
+                }
+                else
+                {
+                    SummonSession newSummonSession = new SummonSession();
+                    await db.insertUpdateData(newSummonSession, this.GetDatabasePath("Summons.db").AbsolutePath);
+                    summonSession = newSummonSession;
+                    AddSummonToSummonSession();
+                }
+                
             }
-            #endregion
-            //Star Number
-            #region starNumber
-            //Unlike above, this is immutable, so I thought an index approach
-            //was acceptable
-            int starRadioButtonID = scrollTypeRadioGroup.CheckedRadioButtonId;
-            View selectedStarRadioButton = starNumberRadioGroup.FindViewById(starRadioButtonID);
-            summon.Stars = starNumberRadioGroup.IndexOfChild(selectedStarRadioButton) + 1;
-            #endregion
-
-            //Name
-            if (!String.IsNullOrEmpty(monsterNameEditText.Text))
-            {
-                summon.Name = monsterNameEditText.Text;
-            }
-
-            //Insert
-            await db.insertUpdateData<Summon>(summon, this.GetDatabasePath("Summons.db").AbsolutePath);
-
-            //Calculate Summon Rates
-            calculateRates();
         }
         public void calculateRates()
         {
-            
+            fourStarSummonRateTextView.Text = "changed";
         }
     }
 }
